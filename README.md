@@ -1,5 +1,11 @@
 # Air Quality Kafka Pipeline Project
-Real-time data streaming with Apache Kafka and environmental time series analysis
+As one of the most pressing environmental challenges globally, real-time data streaming and prediction of air quality can be critical to mitigating its impact and informing timely public health interventions. This project presents a real-time air quality forecasting pipeline using Apache Kafka and machine learning, based on the UCI Air Quality dataset. The goal is to simulate a continuous streaming environment where air quality data is ingested, processed, and used for immediate predictions.
+
+### Instructions
+1. Download consumed_air_quality_data.csv
+2. Download my trained model & model features: https://drive.google.com/drive/folders/10xPVzXe52xFhPd2vWzaoXmbKfliW-ppz?usp=sharing
+3. Change to your proper local file path in airqual-consumer.py and airqual-producer.py for files downloaded in step 1 & 2
+4. Start Zookeeper & Kafka to run both .py files for sending and receiving messages in Kafka; don't forget to create a new Kafka topic titled "air-qual-test" before running the producer file!
 
 ### Data Preprocessing
 The Air Quality dataset contained several preprocessing steps. Below is a summary of actions taken to clean and prepare the data:
@@ -22,8 +28,6 @@ To prepare the air quality dataset for time series modeling, I engineered featur
 
 ### Challenges to Kakfa Setup
 While setting up Apache Kafka on Windows, I encountered several challenges related to script execution, file paths, and command-line limitations. PowerShell did not recognize Kafka’s .bat startup scripts (zookeeper-server-start.bat, kafka-server-start.bat) unless they were explicitly prefixed with .backwards slash. Additionally, long directory paths caused syntax errors and “input line is too long” issues. To resolve this issue, I relocated Kafka to a simpler path (C:\kafka) and adjusted configuration files accordingly. These adjustments allowed me to successfully start ZooKeeper and Kafka, create topics, and verify message flow between producer and consumer terminals.
-
-My Kafka topic is called "air-qual-test."
 
 ### Kafka & Model Integration
 For real-time prediction, I integrated a trained Random Forest model into the Kafka-based data pipeline. The setup begins with the Kafka consumer script, where processed data is passed to the Random Forest model for prediction. After each prediction is generated, the result is combined with the original input data and stored in a list of records. These records are continuously written to a CSV file using pandas. This happens inside the message loop, so the file is updated in real time as new messages are consumed from Kafka. Each row in the CSV includes the original air quality data along with the predicted values, allowing for easy tracking, evaluation, and future analysis. 
